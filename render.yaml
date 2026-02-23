@@ -6,7 +6,6 @@ services:
   - type: web
     runtime: python
     name: zomato-api
-    plan: free
     rootDir: ai-restaurant-recommender
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn src.phase3_api_service.app:app --host 0.0.0.0 --port $PORT
@@ -19,7 +18,6 @@ services:
   - type: web
     runtime: static
     name: zomato-frontend
-    plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
