@@ -29,10 +29,12 @@ export default function RecommendationList({ data }) {
           ℹ️ {relaxedMessage}
         </div>
       )}
-      <p className="results-header">
+      <div className="results-header">
         <span className="results-count">{totalResults} result{totalResults !== 1 ? 's' : ''} found</span>
-        {generatedAt && ` · Generated ${new Date(generatedAt).toLocaleString()}`}
-      </p>
+        {generatedAt && (
+          <span className="results-generated">Generated {new Date(generatedAt).toLocaleString()}</span>
+        )}
+      </div>
       <div className="recommendation-list">
         {recommendations.map((rec, index) => (
           <RecommendationCard key={`${rec.restaurant_name}-${index}`} recommendation={rec} />

@@ -125,6 +125,7 @@ body {
 
 .hero-subtitle .accent-red {
   color: var(--primary-red);
+  font-weight: 700;
   text-shadow: 0 0 12px rgba(226, 55, 68, 0.35), 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
@@ -149,7 +150,7 @@ body {
   backdrop-filter: blur(8px);
   border: 1px solid var(--card-border);
   border-radius: 999px;
-  font-size: 0.95rem;
+  font-size: 1.15rem;
   color: var(--text-secondary);
   font-weight: 500;
 }
@@ -756,14 +757,26 @@ body {
 }
 
 .results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
   font-size: 0.95rem;
   color: var(--text-muted);
   margin-bottom: var(--spacing-md);
 }
 
+.results-header .results-generated {
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
 .results-header .results-count {
   color: #ffffff;
   font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.2;
 }
 
 .recommendation-list {
