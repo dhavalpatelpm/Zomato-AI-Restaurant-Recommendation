@@ -1,0 +1,28 @@
+# Render Blueprint - Zomato AI Restaurant Recommendation
+# Deploy: Connect this repo at https://dashboard.render.com and add environment variables
+
+services:
+  # Backend API (FastAPI)
+  - type: web
+    runtime: python
+    name: zomato-api
+    plan: free
+    rootDir: ai-restaurant-recommender
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn src.phase3_api_service.app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false  # Add your key in Render Dashboard
+
+  # Frontend (React + Vite)
+  - type: web
+    runtime: static
+    name: zomato-frontend
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false  # Set to your backend URL: https://zomato-api.onrender.com

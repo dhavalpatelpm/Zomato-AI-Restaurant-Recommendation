@@ -184,11 +184,18 @@ cd frontend && npm run dev
 
 ---
 
-## Deployment
+## Deployment (Render)
 
-- **Backend:** Deploy to Railway, Render, or Fly.io. Set `GROQ_API_KEY` in environment.
-- **Frontend:** Deploy to Vercel or Netlify. Set `VITE_API_URL` to your backend URL.
-- **Docker:** Use `infrastructure/docker-compose.yml` for full-stack deployment.
+**Recommended:** Deploy to Render with one click.
+
+1. Connect your repo at [dashboard.render.com](https://dashboard.render.com) → **New +** → **Blueprint**
+2. Add **GROQ_API_KEY** to the `zomato-api` service
+3. After backend deploys, add **VITE_API_URL** (your backend URL) to `zomato-frontend`
+4. Redeploy frontend
+
+See **[docs/RENDER_DEPLOY.md](docs/RENDER_DEPLOY.md)** for the full step-by-step guide.
+
+**Other options:** Railway, Fly.io, Vercel + Render, Docker.
 
 ---
 
