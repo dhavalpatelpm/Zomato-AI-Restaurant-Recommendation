@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+frontend/dist/
+*.parquet
+
+# Cache
+.cache/
+ai-restaurant-recommender/.cache/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,8 @@
+{
+  "name": "zomato-ai-restaurant-recommendation",
+  "private": true,
+  "scripts": {
+    "start": "./start.sh",
+    "stop": "./stop.sh"
+  }
+}
