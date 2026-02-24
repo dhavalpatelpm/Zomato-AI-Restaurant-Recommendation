@@ -24,10 +24,11 @@ export async function getLocalities() {
   try {
     const response = await api.get('/api/localities')
     const localities = response.data.localities || []
-    return localities
+    const restaurantCount = response.data.restaurant_count
+    return { localities, restaurantCount }
   } catch (error) {
     console.error('Error fetching localities:', error)
-    return []
+    return { localities: [], restaurantCount: 0 }
   }
 }
 
@@ -39,5 +40,16 @@ export async function getCuisines() {
   } catch (error) {
     console.error('Error fetching cuisines:', error)
     return []
+  }
+}
+
+export async function getRestaurantCount() {
+  try {
+    const response = await api.get('/api/restaurants')
+    const count = response.data.count ?? 0
+    return count
+  } catch (error) {
+    console.error('Error fetching restaurant count:', error)
+    return 0
   }
 }

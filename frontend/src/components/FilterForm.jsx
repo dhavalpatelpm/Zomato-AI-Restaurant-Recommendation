@@ -18,7 +18,7 @@ const PRICE_RANGES = [
 const MAX_RETRIES = 6
 const RETRY_DELAY_MS = 2000
 
-export default function FilterForm({ onResults, onError, onLoading }) {
+export default function FilterForm({ onResults, onError, onLoading, cuisineToAdd, onCuisineAdded }) {
   const [localities, setLocalities] = useState([])
   const [cuisinesList, setCuisinesList] = useState([])
   const [locality, setLocality] = useState('')
@@ -42,7 +42,7 @@ export default function FilterForm({ onResults, onError, onLoading }) {
       const [localitiesData, cuisinesData] = await Promise.all([
         getLocalities().catch(err => {
           if (!isRetry) console.error('Error loading localities:', err)
-          return []
+          return { localities: [] }
         }),
         getCuisines().catch(err => {
           if (!isRetry) console.error('Error loading cuisines:', err)
@@ -51,7 +51,7 @@ export default function FilterForm({ onResults, onError, onLoading }) {
       ])
 
       clearTimeout(timeoutId)
-      const validLocalities = Array.isArray(localitiesData) ? localitiesData : []
+      const validLocalities = Array.isArray(localitiesData?.localities) ? localitiesData.localities : (Array.isArray(localitiesData) ? localitiesData : [])
       const validCuisines = Array.isArray(cuisinesData) ? cuisinesData : []
 
       setLocalities(validLocalities)
@@ -100,14 +100,21 @@ export default function FilterForm({ onResults, onError, onLoading }) {
     setValidationError('')
   }
 
-  const addCuisine = (cuisine) => {
+  const addCuisine = useCallback((cuisine) => {
     const c = typeof cuisine === 'string' ? cuisine.trim() : ''
     if (!c) return
     const title = toTitleCase(c)
     setCuisines((prev) => (prev.includes(title) ? prev : [...prev, title]))
     setCuisineSearch('')
     setValidationError('')
-  }
+  }, [])
+
+  useEffect(() => {
+    if (cuisineToAdd && typeof cuisineToAdd === 'string') {
+      addCuisine(cuisineToAdd)
+      onCuisineAdded?.()
+    }
+  }, [cuisineToAdd, addCuisine, onCuisineAdded])
 
   const filteredCuisines = cuisinesList.filter((c) =>
     c.toLowerCase().includes(cuisineSearch.trim().toLowerCase())

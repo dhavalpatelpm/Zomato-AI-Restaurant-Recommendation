@@ -8,7 +8,7 @@ from datetime import datetime
 from fastapi import APIRouter
 
 from .schemas import RecommendationRequest, RecommendationResponse
-from .service import filter_restaurants_with_fallback, _row_to_dict, get_all_localities, get_all_cuisines
+from .service import filter_restaurants_with_fallback, _row_to_dict, get_all_localities, get_all_cuisines, get_restaurant_count
 
 
 logger = logging.getLogger(__name__)
@@ -142,13 +142,18 @@ def recommend(request: RecommendationRequest) -> RecommendationResponse:
 
 @router.get("/localities")
 def get_localities() -> dict:
-    """Get all available localities from the dataset."""
+    """Get all available localities and restaurant count from the dataset."""
     try:
         localities = get_all_localities()
-        return {"localities": localities, "count": len(localities)}
+        restaurant_count = get_restaurant_count()
+        return {
+            "localities": localities,
+            "count": len(localities),
+            "restaurant_count": restaurant_count,
+        }
     except Exception as e:
         logger.error("Error fetching localities: %s", str(e))
-        return {"localities": [], "count": 0}
+        return {"localities": [], "count": 0, "restaurant_count": 0}
 
 
 @router.get("/cuisines")
@@ -160,3 +165,14 @@ def get_cuisines() -> dict:
     except Exception as e:
         logger.error("Error fetching cuisines: %s", str(e))
         return {"cuisines": [], "count": 0}
+
+
+@router.get("/restaurants")
+def get_restaurants() -> dict:
+    """Get total restaurant count for Bangalore dataset."""
+    try:
+        count = get_restaurant_count()
+        return {"count": count}
+    except Exception as e:
+        logger.error("Error fetching restaurant count: %s", str(e))
+        return {"count": 0}

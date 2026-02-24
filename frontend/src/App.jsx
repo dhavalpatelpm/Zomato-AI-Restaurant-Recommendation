@@ -10,28 +10,24 @@ export default function App() {
   const [localityCount, setLocalityCount] = useState(null)
   const [cuisineCount, setCuisineCount] = useState(null)
   const [countsLoading, setCountsLoading] = useState(true)
+  const [cuisineToAdd, setCuisineToAdd] = useState(null)
 
   useEffect(() => {
-    // Load counts immediately on mount - no delay
     const loadCounts = async () => {
-      try {
-        setCountsLoading(true)
-        // Fetch both in parallel for fastest loading
-        const [localitiesData, cuisinesData] = await Promise.all([
-          getLocalities(),
-          getCuisines(),
-        ])
-        // Update counts as soon as data arrives
-        setLocalityCount(Array.isArray(localitiesData) ? localitiesData.length : 0)
-        setCuisineCount(Array.isArray(cuisinesData) ? cuisinesData.length : 0)
-      } catch (err) {
-        console.error('Failed to load counts:', err)
-        // Don't set to 0 on error, keep showing ... until retry succeeds
-      } finally {
-        setCountsLoading(false)
+      setCountsLoading(true)
+      const [localitiesResult, cuisinesResult] = await Promise.allSettled([
+        getLocalities(),
+        getCuisines(),
+      ])
+      if (localitiesResult.status === 'fulfilled') {
+        const { localities = [] } = localitiesResult.value
+        setLocalityCount(Array.isArray(localities) ? localities.length : 0)
       }
+      if (cuisinesResult.status === 'fulfilled' && Array.isArray(cuisinesResult.value)) {
+        setCuisineCount(cuisinesResult.value.length)
+      }
+      setCountsLoading(false)
     }
-    // Start loading immediately, no delay
     loadCounts()
   }, [])
 
@@ -62,18 +58,36 @@ export default function App() {
         <p className="hero-subtitle">Helping you find the best places to eat in <span className="accent-red">Bangalore</span> city</p>
         <div className="hero-stats">
           <span className="stat">
-            📍 <span className="stat-number">{countsLoading ? '...' : localityCount}</span> Localities
+            📍 <span className="stat-number">{countsLoading ? '...' : (localityCount ?? '—')}</span> Localities
           </span>
           <span className="stat-divider">|</span>
           <span className="stat">
-            🍴 <span className="stat-number">{countsLoading ? '...' : cuisineCount}</span> Cuisines
+            🍴 <span className="stat-number">{countsLoading ? '...' : (cuisineCount ?? '—')}</span> Cuisines
           </span>
+        </div>
+        <div className="top-cuisines">
+          <span className="top-cuisines-label">Top cuisines in Bangalore</span>
+          <div className="top-cuisines-boxes">
+            {['North Indian', 'Chinese', 'South Indian', 'Fast Food', 'Biryani'].map((cuisine) => (
+              <button
+                key={cuisine}
+                type="button"
+                className="top-cuisine-box"
+                onClick={() => setCuisineToAdd(cuisine)}
+                aria-label={`Select ${cuisine} cuisine`}
+              >
+                {cuisine}
+              </button>
+            ))}
+          </div>
         </div>
       </header>
       <FilterForm
         onResults={handleResults}
         onError={handleError}
         onLoading={setLoading}
+        cuisineToAdd={cuisineToAdd}
+        onCuisineAdded={() => setCuisineToAdd(null)}
       />
       {loading && <Loader />}
       {results && <RecommendationList data={results} />}

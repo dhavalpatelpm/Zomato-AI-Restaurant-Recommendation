@@ -136,6 +136,12 @@ def get_all_localities() -> List[str]:
     return localities
 
 
+def get_restaurant_count() -> int:
+    """Get total number of restaurants in the dataset."""
+    df = _load_processed_dataset()
+    return len(df)
+
+
 def get_all_cuisines() -> List[str]:
     """Get all unique cuisines from the dataset."""
     df = _load_processed_dataset()
