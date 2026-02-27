@@ -27,13 +27,30 @@ st.markdown("""
             linear-gradient(180deg, #000000 0%, #3d0a0a 50%, #000000 100%);
     }
     
-    /* Hero title */
+    /* Center main content - match React max-width 960px */
+    [data-testid="stAppViewContainer"] > section > div {
+        max-width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    
+    /* Hero section - CENTERED */
+    .hero-section {
+        text-align: center;
+        margin-bottom: 2rem;
+        max-width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+    }
     .hero-title {
         font-size: 2.8rem;
         font-weight: 800;
         color: #ffffff;
         margin-bottom: 0.5rem;
         letter-spacing: -0.03em;
+        text-align: center;
     }
     .accent-red {
         color: #E23744 !important;
@@ -43,12 +60,14 @@ st.markdown("""
         font-size: 1.35rem;
         color: rgba(255,255,255,0.85);
         margin-bottom: 1.5rem;
+        text-align: center;
     }
     
-    /* Hero stats pill (92 Localities | 106 Cuisines) */
+    /* Hero stats pill - centered */
     .hero-stats {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 1rem;
         padding: 0.5rem 1.5rem;
         background: rgba(255, 255, 255, 0.06);
@@ -69,13 +88,18 @@ st.markdown("""
         opacity: 0.6;
     }
     
-    /* Top cuisines section */
+    /* Top cuisines section - centered */
+    .top-cuisines-wrap {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
     .top-cuisines-label {
         font-size: 1.15rem;
         color: #ffffff;
         font-weight: 700;
         margin-bottom: 1rem;
         display: block;
+        text-align: center;
     }
     .top-cuisines-boxes {
         display: flex;
@@ -104,13 +128,17 @@ st.markdown("""
         box-shadow: 0 0 16px rgba(233, 30, 99, 0.2);
     }
     
-    /* Form card */
+    /* Form card - centered, match original */
     div[data-testid="stForm"] {
         background: rgba(255, 255, 255, 0.06);
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 20px;
         padding: 2rem;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    /* Form submit row - full width button */
+    div[data-testid="stForm"] > div:last-child {
+        width: 100%;
     }
     
     /* Result cards */
@@ -153,13 +181,19 @@ st.markdown("""
         background: rgba(233, 30, 99, 0.1) !important;
     }
     
-    /* Submit button - override for form submit */
+    /* Submit button - match Image 3: full-width, red-pink gradient */
+    div[data-testid="stForm"] .stButton {
+        width: 100%;
+    }
     div[data-testid="stForm"] .stButton > button {
-        background: linear-gradient(135deg, #e91e63, #c62828) !important;
+        width: 100% !important;
+        background: linear-gradient(90deg, #e91e63 0%, #c62828 100%) !important;
         color: white !important;
         font-weight: 600 !important;
+        font-size: 1.1rem !important;
         border-radius: 12px !important;
         border: none !important;
+        padding: 0.875rem 1.5rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -182,32 +216,30 @@ localities, cuisines_list = load_options()
 locality_count = len(localities)
 cuisine_count = len(cuisines_list)
 
-# Hero header
-st.markdown(
-    '<p class="hero-title"><span class="accent-red">Zomato</span> AI Recommender</p>',
-    unsafe_allow_html=True,
-)
-st.markdown(
-    '<p class="hero-subtitle">Helping you find the best places to eat in <span class="accent-red">Bangalore</span> city</p>',
-    unsafe_allow_html=True,
-)
+# Hero section - all centered
+hero_html = f'''
+<div class="hero-section">
+    <p class="hero-title"><span class="accent-red">Zomato</span> AI Recommender</p>
+    <p class="hero-subtitle">Helping you find the best places to eat in <span class="accent-red">Bangalore</span> city</p>
+    <div class="hero-stats">
+        <span>📍 <span class="stat-number">{locality_count}</span> Localities</span>
+        <span class="stat-divider">|</span>
+        <span>🍴 <span class="stat-number">{cuisine_count}</span> Cuisines</span>
+    </div>
+    <div class="top-cuisines-wrap">
+        <span class="top-cuisines-label">Top cuisines in Bangalore</span>
+    </div>
+</div>
+'''
+st.markdown(hero_html, unsafe_allow_html=True)
 
-# Hero stats pill
-st.markdown(
-    f'<div class="hero-stats">'
-    f'<span>📍 <span class="stat-number">{locality_count}</span> Localities</span>'
-    f'<span class="stat-divider">|</span>'
-    f'<span>🍴 <span class="stat-number">{cuisine_count}</span> Cuisines</span>'
-    f'</div>',
-    unsafe_allow_html=True,
-)
-
-# Top cuisines - clickable boxes
-st.markdown('<span class="top-cuisines-label">Top cuisines in Bangalore</span>', unsafe_allow_html=True)
+# Top cuisines - centered row of clickable boxes
 TOP_CUISINES = ["North Indian", "Chinese", "South Indian", "Fast Food", "Biryani"]
-cols = st.columns(5)
+# Use side columns to center the 5 cuisine buttons
+_, c1, c2, c3, c4, c5, _ = st.columns([1, 1, 1, 1, 1, 1, 1])
+cuisine_cols = [c1, c2, c3, c4, c5]
 for i, cuisine in enumerate(TOP_CUISINES):
-    with cols[i]:
+    with cuisine_cols[i]:
         if st.button(cuisine, key=f"top_{cuisine}", use_container_width=True):
             if cuisine not in st.session_state.preselected_cuisines:
                 st.session_state.preselected_cuisines.append(cuisine)
@@ -225,7 +257,7 @@ PRICE_RANGES = [
     (5000, "Premium (₹ > 1500)"),
 ]
 
-# Form
+# Form - layout matches original: Left: Locality, Cuisines | Right: Price Range, Rating
 with st.form("recommend_form"):
     col1, col2 = st.columns(2)
     with col1:
@@ -234,17 +266,17 @@ with st.form("recommend_form"):
             options=[""] + localities,
             format_func=lambda x: "Select locality..." if x == "" else x.title(),
         )
-        price_range = st.selectbox(
-            "💰 Price Range *",
-            options=[p[0] for p in PRICE_RANGES],
-            format_func=lambda x: next(p[1] for p in PRICE_RANGES if p[0] == x),
-        )
-    with col2:
         selected_cuisines = st.multiselect(
             "🍴 Cuisines (Multi-select) *",
             options=cuisines_list,
             default=default_cuisines,
             help="Select one or more cuisines. Click top cuisines above to quick-add.",
+        )
+    with col2:
+        price_range = st.selectbox(
+            "💰 Price Range *",
+            options=[p[0] for p in PRICE_RANGES],
+            format_func=lambda x: next(p[1] for p in PRICE_RANGES if p[0] == x),
         )
         min_rating = st.slider(
             "⭐ Min Rating *",
