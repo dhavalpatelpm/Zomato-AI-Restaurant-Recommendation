@@ -74,7 +74,7 @@ export default function App() {
           </span>
         </div>
         <div className="top-cuisines">
-          <span className="top-cuisines-label">Top cuisines in Bangalore</span>
+          <span className="top-cuisines-label">Top cuisines in <span className="top-cuisines-label-city">Bangalore</span></span>
           <div className="top-cuisines-boxes">
             {['North Indian', 'Chinese', 'South Indian', 'Fast Food', 'Biryani'].map((cuisine) => (
               <button

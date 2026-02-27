@@ -188,6 +188,12 @@ body {
   margin-bottom: var(--spacing-sm);
 }
 
+.top-cuisines-label-city {
+  color: var(--accent-red);
+  font-weight: 800;
+  font-size: 1.35rem;
+}
+
 .top-cuisines-boxes {
   display: flex;
   flex-wrap: wrap;
