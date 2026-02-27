@@ -1,0 +1,11 @@
+# Streamlit deployment - use with: streamlit run streamlit_app.py
+# Set working directory to ai-restaurant-recommender when deploying on Streamlit Cloud
+
+streamlit>=1.28.0
+datasets>=2.14.0
+pandas>=2.0.0
+pyarrow>=14.0.0
+fastapi>=0.104.0
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+groq>=0.4.0

@@ -7,7 +7,7 @@ kill_port() {
   PORT=$1
   PID=$(lsof -ti :$PORT 2>/dev/null)
   if [ -n "$PID" ]; then
-    kill $PID 2>/dev/null || true
+    kill -9 $PID 2>/dev/null || kill $PID 2>/dev/null || true
     echo "  Stopped process on port $PORT (PID $PID)"
   fi
 }

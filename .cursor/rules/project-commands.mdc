@@ -1,12 +1,12 @@
 ---
-description: Run and stop the project - when user says "Run the project" or "Stop the project"
+description: Run and stop the project - when user says "Start/Run the project" or "Stop the project"
 alwaysApply: true
 ---
 
 # Project Commands
 
-When the user says **"Run the project"** (or similar: start the project, run the app):
+When the user says **"Start the project"** or **"Run the project"** (or similar: start, run, run the app):
 - Execute `npm start` from the project root (runs `./start.sh` - backend + frontend)
 
-When the user says **"Stop the project"** (or similar: stop the app):
+When the user says **"Stop the project"** (or similar: stop, kill, stop the app):
 - Execute `npm run stop` from the project root (runs `./stop.sh` - kills ports 8000 and 5173)
