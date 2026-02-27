@@ -77,9 +77,11 @@ body {
     radial-gradient(ellipse 80% 50% at 50% 0%, var(--bg-glow) 0%, transparent 50%),
     linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-maroon) 50%, var(--bg-dark) 100%);
   min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport for mobile Safari */
   color: var(--text-primary);
   line-height: 1.5;
   animation: fadeIn 0.6s ease-in;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 @keyframes fadeIn {
@@ -98,6 +100,7 @@ body {
   width: 100%;
   margin: 0 auto;
   padding: var(--spacing-xl) var(--spacing-md);
+  padding-bottom: calc(var(--spacing-xl) + env(safe-area-inset-bottom));
   animation: slideUp 0.8s ease-out;
   overflow-x: hidden;
 }
@@ -357,8 +360,29 @@ body {
   pointer-events: none;
 }
 
+.retry-data-block {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(233, 30, 99, 0.08);
+  border: 1px solid rgba(233, 30, 99, 0.25);
+  border-radius: var(--radius-sm);
+}
+
+.retry-data-msg {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.retry-data-msg code {
+  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+}
+
 .retry-data-btn {
-  margin-top: 0.5rem;
   padding: 0.5rem 1rem;
   font-size: 0.85rem;
   background: rgba(233, 30, 99, 0.3);
@@ -367,6 +391,7 @@ body {
   color: var(--accent-pink-light);
   cursor: pointer;
   transition: background 0.2s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .retry-data-btn:hover {
@@ -1288,6 +1313,25 @@ body {
   .app {
     padding-left: max(var(--spacing-sm), env(safe-area-inset-left));
     padding-right: max(var(--spacing-sm), env(safe-area-inset-right));
+    /* Extra bottom padding for iPhone Safari browser bar - prevents content cut-off */
+    padding-bottom: max(6rem, calc(env(safe-area-inset-bottom) + 5rem));
+  }
+
+  .app-footer {
+    margin-bottom: 2rem; /* Space above Safari bottom bar */
+  }
+}
+
+/* ========== iPhone Safari - extra bottom space ========== */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  @media (max-width: 600px) {
+    .app {
+      padding-bottom: max(7rem, calc(env(safe-area-inset-bottom) + 6rem));
+    }
+
+    .filter-section {
+      margin-bottom: 0.5rem;
+    }
   }
 }
 

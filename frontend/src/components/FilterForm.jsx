@@ -272,17 +272,22 @@ export default function FilterForm({ onResults, onError, onLoading, cuisineToAdd
                   )
                 })
               ) : (
-                <option value="" disabled>No localities available — ensure backend is running</option>
+                <option value="" disabled>No localities available — check backend</option>
               )}
             </select>
             {!loadingData && localities.length === 0 && (
-              <button
-                type="button"
-                className="retry-data-btn"
-                onClick={loadData}
-              >
-                Retry loading localities
-              </button>
+              <div className="retry-data-block">
+                <p className="retry-data-msg">
+                  Can&apos;t connect to API. If this is the deployed app, set <code>VITE_API_URL</code> in Vercel to your backend URL.
+                </p>
+                <button
+                  type="button"
+                  className="retry-data-btn"
+                  onClick={loadData}
+                >
+                  Retry loading localities
+                </button>
+              </div>
             )}
           </div>
           <div className="form-group">

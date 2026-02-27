@@ -25,3 +25,19 @@ Quick guide to deploy the React frontend on Vercel.
 
 - Ensure your backend allows CORS from `*.vercel.app`
 - Test the app at your Vercel URL
+
+---
+
+## Troubleshooting
+
+### "0 Localities" / "Retry loading localities" / Data won't load
+
+**Cause:** Frontend can't reach the backend API.
+
+**Fix:**
+1. **Deploy backend first** – Use [Render](https://render.com) (see `docs/RENDER_DEPLOY.md`). Add `GROQ_API_KEY` to the backend service.
+2. **Set `VITE_API_URL` in Vercel:**
+   - Project → **Settings** → **Environment Variables**
+   - Add: `VITE_API_URL` = `https://your-backend-url.onrender.com` (no trailing slash)
+3. **Redeploy** – Trigger a new deployment so the build picks up the variable.
+4. **Verify** – Backend must be running and reachable. Test `https://your-backend.onrender.com/health` in a browser.
