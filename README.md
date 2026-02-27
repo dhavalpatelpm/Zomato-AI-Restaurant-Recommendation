@@ -141,8 +141,6 @@ cd frontend && npm run dev
 
 ```
 ├── ai-restaurant-recommender/    # Backend
-│   ├── streamlit_app.py          # Streamlit UI for deployment
-│   ├── requirements-streamlit.txt
 │   ├── src/
 │   │   ├── phase1_data_acquisition/
 │   │   ├── phase2_data_processing/
@@ -197,22 +195,7 @@ cd frontend && npm run dev
 
 See **[docs/RENDER_DEPLOY.md](docs/RENDER_DEPLOY.md)** for the full step-by-step guide.
 
-**Other options:** Railway, Fly.io, Vercel + Render, Docker.
-
----
-
-## Streamlit Deployment
-
-Deploy as a standalone Streamlit app on [Streamlit Community Cloud](https://share.streamlit.io/):
-
-```bash
-cd ai-restaurant-recommender
-pip install -r requirements-streamlit.txt
-export GROQ_API_KEY=your-key
-streamlit run streamlit_app.py
-```
-
-See **[docs/STREAMLIT_DEPLOY.md](docs/STREAMLIT_DEPLOY.md)** for full Streamlit Cloud deployment steps.
+**Other options:** Railway, Fly.io, Vercel (frontend) + Render (backend), Docker.
 
 ---
 

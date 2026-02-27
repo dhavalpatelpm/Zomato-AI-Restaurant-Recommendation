@@ -1,33 +1,28 @@
 {
-  "name": "Python 3",
-  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "name": "Zomato AI Recommender",
   "image": "mcr.microsoft.com/devcontainers/python:1-3.11-bookworm",
   "customizations": {
     "codespaces": {
       "openFiles": [
         "README.md",
-        "ai-restaurant-recommender/streamlit_app.py"
+        "frontend/src/App.jsx"
       ]
     },
     "vscode": {
       "settings": {},
       "extensions": [
         "ms-python.python",
-        "ms-python.vscode-pylance"
+        "ms-python.vscode-pylance",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
       ]
     }
   },
-  "updateContentCommand": "[ -f packages.txt ] && sudo apt update && sudo apt upgrade -y && sudo xargs apt install -y <packages.txt; [ -f requirements.txt ] && pip3 install --user -r requirements.txt; pip3 install --user streamlit; echo '✅ Packages installed and Requirements met'",
-  "postAttachCommand": {
-    "server": "streamlit run ai-restaurant-recommender/streamlit_app.py --server.enableCORS false --server.enableXsrfProtection false"
-  },
+  "updateContentCommand": "[ -f packages.txt ] && sudo apt update && sudo apt upgrade -y && sudo xargs apt install -y <packages.txt; [ -f ai-restaurant-recommender/requirements.txt ] && pip3 install --user -r ai-restaurant-recommender/requirements.txt; [ -f frontend/package.json ] && cd frontend && npm install; echo '✅ Packages installed'",
+  "postAttachCommand": "npm start",
   "portsAttributes": {
-    "8501": {
-      "label": "Application",
-      "onAutoForward": "openPreview"
-    }
+    "8000": { "label": "Backend API" },
+    "5173": { "label": "Frontend", "onAutoForward": "openPreview" }
   },
-  "forwardPorts": [
-    8501
-  ]
+  "forwardPorts": [8000, 5173]
 }
