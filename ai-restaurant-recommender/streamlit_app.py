@@ -29,7 +29,7 @@ st.markdown("""
         padding: 2.5rem 1.5rem;
     }
     
-    /* Hero - React: 4rem title, 1.35rem subtitle */
+    /* Hero - match React app (localhost:5173): 4rem title, 1.35rem subtitle */
     .hero-section { text-align: center; margin-bottom: 2rem; }
     .hero-title {
         font-size: 4rem;
@@ -100,7 +100,7 @@ st.markdown("""
         box-shadow: 0 4px 20px rgba(233,30,99,0.4) !important;
     }
     
-    /* Top cuisine buttons */
+    /* Top cuisine buttons - match React: no text wrap, centered */
     .stButton > button:not(div[data-testid="stForm"] .stButton > button) {
         background: rgba(255,255,255,0.06) !important;
         border: 1px solid rgba(255,255,255,0.2) !important;
@@ -109,6 +109,7 @@ st.markdown("""
         font-weight: 600 !important;
         font-size: 0.95rem !important;
         padding: 0.6rem 1.25rem !important;
+        white-space: nowrap !important;
     }
     .stButton > button:hover:not(div[data-testid="stForm"] .stButton > button:hover) {
         border-color: #e91e63 !important;
@@ -196,6 +197,11 @@ st.markdown("""
     }
     .footer-line1 { font-weight: 700; text-transform: uppercase; }
     .footer-line2 { font-size: 0.8rem; color: rgba(255,255,255,0.9); }
+
+    @media (max-width: 600px) {
+        .hero-title { font-size: 3rem; }
+        .hero-subtitle { font-size: 1.15rem; }
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -233,9 +239,9 @@ st.markdown(f'''
 </div>
 ''', unsafe_allow_html=True)
 
-# Top cuisines
+# Top cuisines - 5 equal columns, centered, no text wrap (match React localhost:5173)
 TOP_CUISINES = ["North Indian", "Chinese", "South Indian", "Fast Food", "Biryani"]
-_, c1, c2, c3, c4, c5, _ = st.columns([1, 1, 1, 1, 1, 1, 1])
+c1, c2, c3, c4, c5 = st.columns(5)
 for i, cuisine in enumerate(TOP_CUISINES):
     with [c1, c2, c3, c4, c5][i]:
         if st.button(cuisine, key=f"top_{cuisine}", use_container_width=True, disabled=not cuisines_list):
