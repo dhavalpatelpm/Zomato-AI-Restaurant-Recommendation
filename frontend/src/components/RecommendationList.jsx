@@ -59,18 +59,20 @@ export default function RecommendationList({ data }) {
       <div className="results-header">
         <span className="results-count">{totalResults} result{totalResults !== 1 ? 's' : ''} found</span>
         <div className="results-sort-filter">
-          <label htmlFor="sort-filter" className="results-sort-label">Sort by</label>
-          <select
-            id="sort-filter"
-            className="results-sort-select"
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            aria-label="Sort results"
-          >
+          <span className="results-sort-label">Sort by</span>
+          <div className="results-sort-buttons" role="group" aria-label="Sort results">
             {SORT_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>{opt.label}</option>
+              <button
+                key={opt.value}
+                type="button"
+                className={`sort-option-btn ${sortBy === opt.value ? 'active' : ''}`}
+                onClick={() => setSortBy(opt.value)}
+                aria-pressed={sortBy === opt.value}
+              >
+                {opt.label}
+              </button>
             ))}
-          </select>
+          </div>
         </div>
       </div>
       <div className="recommendation-list">
