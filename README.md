@@ -195,7 +195,7 @@ cd frontend && npm run dev
 
 See **[docs/RENDER_DEPLOY.md](docs/RENDER_DEPLOY.md)** for the full step-by-step guide.
 
-**Other options:** Railway, Fly.io, Vercel (frontend) + Render (backend), Docker.
+**Other options:** Railway, Fly.io, Vercel (frontend) + Render (backend), Docker. See **[docs/VERCEL_DEPLOY.md](docs/VERCEL_DEPLOY.md)** for Vercel frontend deployment.
 
 ---
 
