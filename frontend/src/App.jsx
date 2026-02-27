@@ -43,6 +43,9 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const isProdDeploy = typeof window !== 'undefined' && !window.location.hostname.includes('localhost')
+  const apiFailing = !countsLoading && (localityCount === 0 || localityCount == null) && (cuisineCount === 0 || cuisineCount == null)
+
   return (
     <>
       <div className="vertical-zomato-text" aria-hidden="true">
@@ -50,6 +53,11 @@ export default function App() {
           <span key={i} className="vertical-zomato-char">{char}</span>
         ))}
       </div>
+      {isProdDeploy && apiFailing && (
+        <div className="api-config-banner" role="alert">
+          <strong>API not configured.</strong> Set <code>VITE_API_URL</code> in Vercel → Settings → Environment Variables to your backend URL (e.g. <code>https://your-api.onrender.com</code>), then redeploy. <a href="https://github.com/dhavalpatelpm/Zomato-AI-Restaurant-Recommendation/blob/main/docs/VERCEL_DEPLOY.md" target="_blank" rel="noopener noreferrer">View guide</a>
+        </div>
+      )}
       <div className="app">
       <header className="hero">
         <h1 className="hero-title">

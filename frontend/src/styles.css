@@ -769,6 +769,34 @@ body {
   }
 }
 
+.api-config-banner {
+  background: rgba(255, 193, 7, 0.15);
+  border: 1px solid rgba(255, 193, 7, 0.5);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  margin: 1rem auto;
+  max-width: 960px;
+  font-size: 0.9rem;
+  color: #ffd54f;
+  text-align: center;
+}
+
+.api-config-banner code {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.api-config-banner a {
+  color: #ffab91;
+  text-decoration: underline;
+}
+
+.api-config-banner a:hover {
+  color: #ffcc80;
+}
+
 .validation-error {
   background: var(--error-bg);
   backdrop-filter: blur(8px);
