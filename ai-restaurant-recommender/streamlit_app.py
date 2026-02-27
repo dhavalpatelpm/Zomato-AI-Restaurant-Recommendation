@@ -16,6 +16,10 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
     
     * { box-sizing: border-box; }
+    /* Hide Streamlit header/decorations for cleaner match to React */
+    header[data-testid="stHeader"] { background: transparent; }
+    #MainMenu, footer { visibility: hidden; }
+    .stDeployButton { display: none; }
     .stApp {
         background: #000000;
         background-image: radial-gradient(ellipse 80% 50% at 50% 0%, #5a1a1a 0%, transparent 50%),
@@ -27,6 +31,8 @@ st.markdown("""
         margin-left: auto;
         margin-right: auto;
         padding: 2.5rem 1.5rem;
+        position: relative;
+        z-index: 1;
     }
     
     /* Hero - match React app (localhost:5173): 4rem title, 1.35rem subtitle */
@@ -78,6 +84,7 @@ st.markdown("""
     div[data-testid="stForm"] {
         background: rgba(255,255,255,0.06);
         backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(255,255,255,0.2);
         border-radius: 20px;
         padding: 2rem;
@@ -85,8 +92,19 @@ st.markdown("""
     }
     /* Labels - React: 0.9rem, font-weight 600 */
     .stForm label { font-size: 0.9rem !important; font-weight: 600 !important; color: rgba(255,255,255,0.85) !important; }
-    
-    /* Submit - React: 1.15rem, padding 1.125rem, gradient 135deg */
+    /* Form inputs - match React dark gray style */
+    .stForm [data-baseweb="select"] > div,
+    .stForm [data-baseweb="input"] {
+        background: rgba(255,255,255,0.08) !important;
+        border: 1px solid rgba(255,255,255,0.15) !important;
+        border-radius: 12px !important;
+    }
+    .stForm [data-baseweb="select"] > div:hover,
+    .stForm [data-baseweb="input"]:hover {
+        border-color: rgba(255,255,255,0.3) !important;
+        background: rgba(255,255,255,0.1) !important;
+    }
+    /* Submit - React: vibrant red/pink gradient */
     div[data-testid="stForm"] .stButton { width: 100%; margin-top: 1rem; }
     div[data-testid="stForm"] .stButton > button {
         width: 100% !important;
@@ -98,6 +116,11 @@ st.markdown("""
         border: none !important;
         border-radius: 14px !important;
         box-shadow: 0 4px 20px rgba(233,30,99,0.4) !important;
+        transition: all 0.3s ease !important;
+    }
+    div[data-testid="stForm"] .stButton > button:hover {
+        transform: scale(1.02) translateY(-2px) !important;
+        box-shadow: 0 8px 28px rgba(233,30,99,0.5) !important;
     }
     
     /* Top cuisine buttons - match React: no text wrap, centered */
@@ -197,6 +220,62 @@ st.markdown("""
     }
     .footer-line1 { font-weight: 700; text-transform: uppercase; }
     .footer-line2 { font-size: 0.8rem; color: rgba(255,255,255,0.9); }
+    .footer-name { font-weight: 800; color: #ffffff; }
+
+    /* Vertical ZOMATO text - match React (hidden on narrow) */
+    .vertical-zomato-text {
+        position: fixed;
+        left: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.2em;
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(180deg, #FF0066 0%, #c62828 50%, #500000 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        pointer-events: none;
+        z-index: 0;
+    }
+    .vertical-zomato-char { line-height: 1; display: block; }
+    @media (max-width: 1100px) {
+        .vertical-zomato-text { display: none; }
+    }
+    /* Go to Top button - match React scroll-to-top */
+    .scroll-to-top {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: linear-gradient(90deg, #E62C2F 0%, #3C151B 100%);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: white;
+        font-size: 1.25rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        transition: transform 0.2s, box-shadow 0.2s;
+        z-index: 100;
+        text-decoration: none;
+        line-height: 1;
+    }
+    .scroll-to-top:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(230,44,47,0.4);
+        color: white;
+    }
+    /* Footer - match React footer-heart 3rem */
+    .footer-heart { font-size: 3rem !important; line-height: 1; }
+    .footer-text-block { display: flex; flex-direction: column; align-items: flex-start; gap: 0.2rem; }
 
     @media (max-width: 600px) {
         .hero-title { font-size: 3rem; }
@@ -204,6 +283,18 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
+# Vertical ZOMATO sidebar (match React)
+st.markdown('''
+<div class="vertical-zomato-text" aria-hidden="true">
+    <span class="vertical-zomato-char">Z</span>
+    <span class="vertical-zomato-char">O</span>
+    <span class="vertical-zomato-char">M</span>
+    <span class="vertical-zomato-char">A</span>
+    <span class="vertical-zomato-char">T</span>
+    <span class="vertical-zomato-char">O</span>
+</div>
+''', unsafe_allow_html=True)
 
 # Session state
 if "preselected_cuisines" not in st.session_state:
@@ -251,21 +342,22 @@ for i, cuisine in enumerate(TOP_CUISINES):
 
 default_cuisines = [c for c in st.session_state.preselected_cuisines if c in (cuisines_list or [])]
 
-PRICE_RANGES = [(500, "Budget (₹ < 500)"), (1500, "Mid-range (₹500 - ₹1500)"), (5000, "Premium (₹ > 1500)")]
+PRICE_RANGES = [(0, "Select price range..."), (500, "Budget (₹ < 500)"), (1500, "Mid-range (₹500 - ₹1500)"), (5000, "Premium (₹ > 1500)")]
 
-# Form
+# Form - layout matches React: Row1 Locality|PriceRange, Row2 Cuisines|Ratings
 with st.form("recommend_form"):
     col1, col2 = st.columns(2)
     with col1:
         locality = st.selectbox(
             "📍 Select Locality *",
             options=[""] + (localities or []),
-            format_func=lambda x: "Select locality..." if x == "" else x.replace("_", " ").title(),
+            format_func=lambda x: "Select Locality..." if x == "" else x.replace("_", " ").title(),
         )
         selected_cuisines = st.multiselect(
             "🍴 Cuisines (Multi-select) *",
             options=cuisines_list or [],
             default=default_cuisines,
+            placeholder="Type or select cuisines...",
             help="Type to search or add. Click top cuisines above to quick-add.",
         )
     with col2:
@@ -297,7 +389,7 @@ if submitted:
     elif min_rating is None or (isinstance(min_rating, float) and (min_rating < 0 or min_rating > 5)):
         validation_error = "Rating must be between 0 and 5."
     elif not price_range or price_range <= 0:
-        validation_error = "Invalid price range selected."
+        validation_error = "Price range is required!"
 
 if validation_error:
     st.session_state.last_results = None
@@ -382,14 +474,19 @@ if response is not None:
 if load_error and (not localities or not cuisines_list):
     st.warning(f"Could not load localities/cuisines. Error: {load_error}. Refresh the page to retry.")
 
-# Footer
+# Footer - match React app
 st.markdown("---")
 st.markdown('''
 <div class="footer-badge">
-    <div>
+    <div class="footer-text-block">
         <span class="footer-line1">POWERED BY GROQ AI</span>
-        <span class="footer-line2">Made by <strong>Dhaval Patel</strong> with</span>
+        <span class="footer-line2">Made by <strong class="footer-name">Dhaval Patel</strong> with</span>
     </div>
-    <span style="font-size:2rem;">❤️</span>
+    <span class="footer-heart" aria-hidden="true">❤️</span>
 </div>
+''', unsafe_allow_html=True)
+
+# Go to Top button - match React scroll-to-top
+st.markdown('''
+<a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="scroll-to-top" aria-label="Scroll to top">▲</a>
 ''', unsafe_allow_html=True)
